@@ -1,0 +1,9 @@
+C:\Users\onurb\Source\Repos\OptimumPointCalculator\OptimumPointCalculator\bin\Debug\OptimumPointCalculator.exe.config
+C:\Users\onurb\Source\Repos\OptimumPointCalculator\OptimumPointCalculator\bin\Debug\OptimumPointCalculator.exe
+C:\Users\onurb\Source\Repos\OptimumPointCalculator\OptimumPointCalculator\bin\Debug\OptimumPointCalculator.pdb
+C:\Users\onurb\Source\Repos\OptimumPointCalculator\OptimumPointCalculator\obj\Debug\OptimumPointCalculator.csprojAssemblyReference.cache
+C:\Users\onurb\Source\Repos\OptimumPointCalculator\OptimumPointCalculator\obj\Debug\OptimumPointCalculator.Form1.resources
+C:\Users\onurb\Source\Repos\OptimumPointCalculator\OptimumPointCalculator\obj\Debug\OptimumPointCalculator.Properties.Resources.resources
+C:\Users\onurb\Source\Repos\OptimumPointCalculator\OptimumPointCalculator\obj\Debug\OptimumPointCalculator.csproj.GenerateResource.cache
+C:\Users\onurb\Source\Repos\OptimumPointCalculator\OptimumPointCalculator\obj\Debug\OptimumPointCalculator.exe
+C:\Users\onurb\Source\Repos\OptimumPointCalculator\OptimumPointCalculator\obj\Debug\OptimumPointCalculator.pdb
