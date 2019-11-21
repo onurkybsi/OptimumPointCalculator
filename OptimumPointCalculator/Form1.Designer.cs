@@ -48,12 +48,10 @@
             this.label5 = new System.Windows.Forms.Label();
             this.variableComboBox = new System.Windows.Forms.ComboBox();
             this.label4 = new System.Windows.Forms.Label();
-            this.contraintsVariableDeleteButton = new System.Windows.Forms.Button();
-            this.contraintsVariableListBox = new System.Windows.Forms.ListBox();
-            this.constraintsVariableAddButton = new System.Windows.Forms.Button();
             this.contraintsCoeffVariableTextBox = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
             this.calculateOptimumPoint = new System.Windows.Forms.Button();
+            this.assignCoefficient = new System.Windows.Forms.Button();
             this.objectiveFunctionGroupBox.SuspendLayout();
             this.constraintsFunctionGroupBox.SuspendLayout();
             this.SuspendLayout();
@@ -109,6 +107,7 @@
             this.objectiveFunction.TabIndex = 6;
             this.objectiveFunction.Text = "z";
             this.objectiveFunction.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.objectiveFunction.TextChanged += new System.EventHandler(this.objectiveFunction_TextChanged);
             // 
             // label2
             // 
@@ -167,6 +166,7 @@
             // 
             // constraintsFunctionGroupBox
             // 
+            this.constraintsFunctionGroupBox.Controls.Add(this.assignCoefficient);
             this.constraintsFunctionGroupBox.Controls.Add(this.deleteConstraint);
             this.constraintsFunctionGroupBox.Controls.Add(this.constraintsListBox);
             this.constraintsFunctionGroupBox.Controls.Add(this.contraintsAddConstraintButton);
@@ -176,9 +176,6 @@
             this.constraintsFunctionGroupBox.Controls.Add(this.label5);
             this.constraintsFunctionGroupBox.Controls.Add(this.variableComboBox);
             this.constraintsFunctionGroupBox.Controls.Add(this.label4);
-            this.constraintsFunctionGroupBox.Controls.Add(this.contraintsVariableDeleteButton);
-            this.constraintsFunctionGroupBox.Controls.Add(this.contraintsVariableListBox);
-            this.constraintsFunctionGroupBox.Controls.Add(this.constraintsVariableAddButton);
             this.constraintsFunctionGroupBox.Controls.Add(this.contraintsCoeffVariableTextBox);
             this.constraintsFunctionGroupBox.Controls.Add(this.label3);
             this.constraintsFunctionGroupBox.Location = new System.Drawing.Point(12, 194);
@@ -190,7 +187,7 @@
             // 
             // deleteConstraint
             // 
-            this.deleteConstraint.Location = new System.Drawing.Point(374, 256);
+            this.deleteConstraint.Location = new System.Drawing.Point(409, 207);
             this.deleteConstraint.Name = "deleteConstraint";
             this.deleteConstraint.Size = new System.Drawing.Size(125, 23);
             this.deleteConstraint.TabIndex = 18;
@@ -201,14 +198,14 @@
             // 
             this.constraintsListBox.FormattingEnabled = true;
             this.constraintsListBox.ItemHeight = 16;
-            this.constraintsListBox.Location = new System.Drawing.Point(87, 222);
+            this.constraintsListBox.Location = new System.Drawing.Point(122, 173);
             this.constraintsListBox.Name = "constraintsListBox";
             this.constraintsListBox.Size = new System.Drawing.Size(253, 100);
             this.constraintsListBox.TabIndex = 17;
             // 
             // contraintsAddConstraintButton
             // 
-            this.contraintsAddConstraintButton.Location = new System.Drawing.Point(491, 182);
+            this.contraintsAddConstraintButton.Location = new System.Drawing.Point(526, 133);
             this.contraintsAddConstraintButton.Name = "contraintsAddConstraintButton";
             this.contraintsAddConstraintButton.Size = new System.Drawing.Size(113, 23);
             this.contraintsAddConstraintButton.TabIndex = 16;
@@ -217,7 +214,7 @@
             // 
             // d
             // 
-            this.d.Location = new System.Drawing.Point(374, 182);
+            this.d.Location = new System.Drawing.Point(409, 133);
             this.d.Name = "d";
             this.d.Size = new System.Drawing.Size(70, 22);
             this.d.TabIndex = 15;
@@ -225,7 +222,7 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(253, 185);
+            this.label6.Location = new System.Drawing.Point(288, 136);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(115, 17);
             this.label6.TabIndex = 14;
@@ -234,7 +231,7 @@
             // comparisonComboBox
             // 
             this.comparisonComboBox.FormattingEnabled = true;
-            this.comparisonComboBox.Location = new System.Drawing.Point(177, 182);
+            this.comparisonComboBox.Location = new System.Drawing.Point(212, 133);
             this.comparisonComboBox.Name = "comparisonComboBox";
             this.comparisonComboBox.Size = new System.Drawing.Size(60, 24);
             this.comparisonComboBox.TabIndex = 13;
@@ -242,7 +239,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(84, 185);
+            this.label5.Location = new System.Drawing.Point(119, 136);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(87, 17);
             this.label5.TabIndex = 12;
@@ -252,7 +249,7 @@
             // 
             this.variableComboBox.DisplayMember = "DisplayMemberForVariableComboBox";
             this.variableComboBox.FormattingEnabled = true;
-            this.variableComboBox.Location = new System.Drawing.Point(416, 31);
+            this.variableComboBox.Location = new System.Drawing.Point(451, 79);
             this.variableComboBox.Name = "variableComboBox";
             this.variableComboBox.Size = new System.Drawing.Size(60, 24);
             this.variableComboBox.TabIndex = 11;
@@ -260,44 +257,15 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(346, 34);
+            this.label4.Location = new System.Drawing.Point(381, 82);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(64, 17);
             this.label4.TabIndex = 10;
             this.label4.Text = "Variable:";
             // 
-            // contraintsVariableDeleteButton
-            // 
-            this.contraintsVariableDeleteButton.Location = new System.Drawing.Point(491, 96);
-            this.contraintsVariableDeleteButton.Name = "contraintsVariableDeleteButton";
-            this.contraintsVariableDeleteButton.Size = new System.Drawing.Size(113, 23);
-            this.contraintsVariableDeleteButton.TabIndex = 9;
-            this.contraintsVariableDeleteButton.Text = "Delete Variable";
-            this.contraintsVariableDeleteButton.UseVisualStyleBackColor = true;
-            // 
-            // contraintsVariableListBox
-            // 
-            this.contraintsVariableListBox.DisplayMember = "DisplayMember";
-            this.contraintsVariableListBox.FormattingEnabled = true;
-            this.contraintsVariableListBox.ItemHeight = 16;
-            this.contraintsVariableListBox.Location = new System.Drawing.Point(87, 59);
-            this.contraintsVariableListBox.Name = "contraintsVariableListBox";
-            this.contraintsVariableListBox.Size = new System.Drawing.Size(253, 100);
-            this.contraintsVariableListBox.TabIndex = 8;
-            // 
-            // constraintsVariableAddButton
-            // 
-            this.constraintsVariableAddButton.Location = new System.Drawing.Point(491, 31);
-            this.constraintsVariableAddButton.Name = "constraintsVariableAddButton";
-            this.constraintsVariableAddButton.Size = new System.Drawing.Size(98, 23);
-            this.constraintsVariableAddButton.TabIndex = 7;
-            this.constraintsVariableAddButton.Text = "Add Variable";
-            this.constraintsVariableAddButton.UseVisualStyleBackColor = true;
-            this.constraintsVariableAddButton.Click += new System.EventHandler(this.constraintsVariableAddButton_Click);
-            // 
             // contraintsCoeffVariableTextBox
             // 
-            this.contraintsCoeffVariableTextBox.Location = new System.Drawing.Point(240, 31);
+            this.contraintsCoeffVariableTextBox.Location = new System.Drawing.Point(275, 79);
             this.contraintsCoeffVariableTextBox.Name = "contraintsCoeffVariableTextBox";
             this.contraintsCoeffVariableTextBox.Size = new System.Drawing.Size(100, 22);
             this.contraintsCoeffVariableTextBox.TabIndex = 6;
@@ -305,7 +273,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(84, 34);
+            this.label3.Location = new System.Drawing.Point(119, 82);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(150, 17);
             this.label3.TabIndex = 5;
@@ -319,6 +287,15 @@
             this.calculateOptimumPoint.TabIndex = 2;
             this.calculateOptimumPoint.Text = "Calculate";
             this.calculateOptimumPoint.UseVisualStyleBackColor = true;
+            // 
+            // assignCoefficient
+            // 
+            this.assignCoefficient.Location = new System.Drawing.Point(526, 79);
+            this.assignCoefficient.Name = "assignCoefficient";
+            this.assignCoefficient.Size = new System.Drawing.Size(128, 25);
+            this.assignCoefficient.TabIndex = 19;
+            this.assignCoefficient.Text = "Assign Coefficient";
+            this.assignCoefficient.UseVisualStyleBackColor = true;
             // 
             // Form1
             // 
@@ -361,12 +338,10 @@
         private System.Windows.Forms.Label label5;
         public System.Windows.Forms.ComboBox variableComboBox;
         private System.Windows.Forms.Label label4;
-        public System.Windows.Forms.Button contraintsVariableDeleteButton;
-        public System.Windows.Forms.ListBox contraintsVariableListBox;
-        public System.Windows.Forms.Button constraintsVariableAddButton;
         public System.Windows.Forms.TextBox contraintsCoeffVariableTextBox;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Button calculateOptimumPoint;
+        public System.Windows.Forms.Button assignCoefficient;
     }
 }
 

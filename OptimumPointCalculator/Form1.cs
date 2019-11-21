@@ -49,8 +49,9 @@ namespace OptimumPointCalculator
 
                 MessageBox.Show("Variable added!", "Adding", MessageBoxButtons.OK);
 
-                objectiveFunctionVariablesListBox.Items.Insert((ObjectiveFunction.Variables.Count - 1), ObjectiveFunction.Variables[(ObjectiveFunction.Variables.Count - 1)]);
-                variableComboBox.Items.Insert((ObjectiveFunction.Variables.Count - 1), ObjectiveFunction.Variables[(ObjectiveFunction.Variables.Count - 1)]);
+                MyMethods.CopyListToTarget(ObjectiveFunction, objectiveFunctionVariablesListBox.Items);
+                MyMethods.CopyListToTarget(ObjectiveFunction, variableComboBox.Items);
+
                 objectiveFunctionCoeffTextBox.Text = String.Empty;
                 MyMethods.UpdateObjectiveFunctionLabel(objectiveFunction, this.ObjectiveFunction);
 
@@ -103,18 +104,14 @@ namespace OptimumPointCalculator
                 this.Optimization = Optimizations.Maximization;
         }
 
-        // Adding variable for contraint functions
-        private void constraintsVariableAddButton_Click(object sender, EventArgs e)
+        // While the objective function changes,TransientEquation changes too.
+        private void objectiveFunction_TextChanged(object sender, EventArgs e)
         {
-            if (ValidationMethods.IsThatDouble(contraintsCoeffVariableTextBox.Text))
-            {
-                
-
-            }
-            else
-            {
-                MessageBox.Show("Please enter a variable and its coefficient ", "Error", MessageBoxButtons.OK);
-            }
+            MyMethods.CopyListToTarget(ObjectiveFunction, TransientEquation);
         }
+        
+        
+
+
     }
 }

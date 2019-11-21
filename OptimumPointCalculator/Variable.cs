@@ -8,7 +8,7 @@ namespace OptimumPointCalculator
 {
     public class Variable
     {
-        public double Coefficient { get; set; } = double.NaN;
+        public double Coefficient { get; set; } = 0;
 
         public string DisplayMember
         {

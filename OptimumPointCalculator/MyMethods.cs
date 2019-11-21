@@ -17,7 +17,6 @@ namespace OptimumPointCalculator
                 list[i].Index = i;
             }
         }
-
         public static void EditListControl(ListBox listBox, IList<Variable> list)
         {
             listBox.Items.Clear();
@@ -36,7 +35,6 @@ namespace OptimumPointCalculator
                 comboBox.Items.Add(list[i]);
             }
         }
-
         public static void UpdateObjectiveFunctionLabel(Label label,Equation objectiveFunction)
         {
             foreach(var item in objectiveFunction.Variables)
@@ -52,6 +50,33 @@ namespace OptimumPointCalculator
                 }
             }
         }
+        public static void CopyListToTarget(Equation objectiveFunction,ListBox.ObjectCollection targetList)
+        {
+            targetList.Clear();
+            foreach(var item in objectiveFunction.Variables)
+            {
+                targetList.Add(item);
+            }
+        }
+        public static void CopyListToTarget(Equation objectiveFunction,ComboBox.ObjectCollection targetList)
+        {
+            targetList.Clear();
+            foreach(var item in objectiveFunction.Variables)
+            {
+                targetList.Add(item);
+            }
+        }
+        public static void CopyListToTarget(Equation objectiveFunction, Equation targetList)
+        {
+            targetList.Variables.Clear();
+            for (int i=0;i<objectiveFunction.Variables.Count;i++)
+            {
+                targetList.Variables.Add(new Variable());
+                targetList.Variables[i].Index = objectiveFunction.Variables[i].Index;
+            }
+ 
+        }
+
 
     }
 }
