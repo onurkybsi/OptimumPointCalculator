@@ -86,6 +86,7 @@
             this.maximizationRadioButton.TabStop = true;
             this.maximizationRadioButton.Text = "Maximization";
             this.maximizationRadioButton.UseVisualStyleBackColor = true;
+            this.maximizationRadioButton.CheckedChanged += new System.EventHandler(this.maximizationRadioButton_CheckedChanged);
             // 
             // minimizationRadioButton
             // 
@@ -97,20 +98,22 @@
             this.minimizationRadioButton.TabStop = true;
             this.minimizationRadioButton.Text = "Minimization";
             this.minimizationRadioButton.UseVisualStyleBackColor = true;
+            this.minimizationRadioButton.CheckedChanged += new System.EventHandler(this.minimizationRadioButton_CheckedChanged);
             // 
             // objectiveFunction
             // 
             this.objectiveFunction.AutoSize = true;
-            this.objectiveFunction.Location = new System.Drawing.Point(585, 92);
+            this.objectiveFunction.Location = new System.Drawing.Point(574, 80);
             this.objectiveFunction.Name = "objectiveFunction";
             this.objectiveFunction.Size = new System.Drawing.Size(15, 17);
             this.objectiveFunction.TabIndex = 6;
             this.objectiveFunction.Text = "z";
+            this.objectiveFunction.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(446, 92);
+            this.label2.Location = new System.Drawing.Point(446, 80);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(133, 17);
             this.label2.TabIndex = 5;
@@ -124,10 +127,11 @@
             this.objectiveFunctionDeleteButton.TabIndex = 4;
             this.objectiveFunctionDeleteButton.Text = "Delete";
             this.objectiveFunctionDeleteButton.UseVisualStyleBackColor = true;
+            this.objectiveFunctionDeleteButton.Click += new System.EventHandler(this.objectiveFunctionDeleteButton_Click_1);
             // 
             // objectiveFunctionVariablesListBox
             // 
-            this.objectiveFunctionVariablesListBox.DisplayMember = "VariableName";
+            this.objectiveFunctionVariablesListBox.DisplayMember = "DisplayMember";
             this.objectiveFunctionVariablesListBox.FormattingEnabled = true;
             this.objectiveFunctionVariablesListBox.ItemHeight = 16;
             this.objectiveFunctionVariablesListBox.Location = new System.Drawing.Point(87, 52);
@@ -246,6 +250,7 @@
             // 
             // variableComboBox
             // 
+            this.variableComboBox.DisplayMember = "DisplayMemberForVariableComboBox";
             this.variableComboBox.FormattingEnabled = true;
             this.variableComboBox.Location = new System.Drawing.Point(416, 31);
             this.variableComboBox.Name = "variableComboBox";
@@ -272,6 +277,7 @@
             // 
             // contraintsVariableListBox
             // 
+            this.contraintsVariableListBox.DisplayMember = "DisplayMember";
             this.contraintsVariableListBox.FormattingEnabled = true;
             this.contraintsVariableListBox.ItemHeight = 16;
             this.contraintsVariableListBox.Location = new System.Drawing.Point(87, 59);
@@ -287,6 +293,7 @@
             this.constraintsVariableAddButton.TabIndex = 7;
             this.constraintsVariableAddButton.Text = "Add Variable";
             this.constraintsVariableAddButton.UseVisualStyleBackColor = true;
+            this.constraintsVariableAddButton.Click += new System.EventHandler(this.constraintsVariableAddButton_Click);
             // 
             // contraintsCoeffVariableTextBox
             // 

@@ -14,11 +14,11 @@ namespace OptimumPointCalculator
         {
             for(int i = 0; i < list.Count; i++)
             {
-                list[i].Index = i + 1;
+                list[i].Index = i;
             }
         }
 
-        public static void EditListBox(ListBox listBox, IList<Variable> list)
+        public static void EditListControl(ListBox listBox, IList<Variable> list)
         {
             listBox.Items.Clear();
 
@@ -27,5 +27,31 @@ namespace OptimumPointCalculator
                 listBox.Items.Add(list[i]);
             }
         }
+        public static void EditListControl(ComboBox comboBox, IList<Variable> list)
+        {
+            comboBox.Items.Clear();
+
+            for (int i = 0; i < list.Count; i++)
+            {
+                comboBox.Items.Add(list[i]);
+            }
+        }
+
+        public static void UpdateObjectiveFunctionLabel(Label label,Equation objectiveFunction)
+        {
+            foreach(var item in objectiveFunction.Variables)
+            {
+                if (item.Index==0)
+                {
+                    label.Text = item.DisplayMember;
+
+                }
+                else
+                {
+                    label.Text += "+" + item.DisplayMember;
+                }
+            }
+        }
+
     }
 }

@@ -8,13 +8,21 @@ namespace OptimumPointCalculator
 {
     public class Variable
     {
-        public double Coefficient { get; set; }
+        public double Coefficient { get; set; } = double.NaN;
 
-        public string VariableName
+        public string DisplayMember
         {
             get
             {
-                return "x" + Index.ToString();
+                return Coefficient .ToString() + "x" + (Index+1).ToString();
+            }
+        }
+
+        public string DisplayMemberForVariableComboBox
+        {
+            get
+            {
+                return "x" + (Index+1).ToString();
             }
         }
 
