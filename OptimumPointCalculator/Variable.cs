@@ -8,15 +8,7 @@ namespace OptimumPointCalculator
 {
     public class Variable
     {
-        public double Coefficient { get; set; } = 0;
-
-        public string DisplayMember
-        {
-            get
-            {
-                return Coefficient .ToString() + "x" + (Index+1).ToString();
-            }
-        }
+        public double Coefficient { get; set; } = double.PositiveInfinity;
 
         public string DisplayMemberForVariableComboBox
         {
@@ -28,5 +20,9 @@ namespace OptimumPointCalculator
 
         public int Index { get; set; }
 
+        public override string ToString()
+        {
+            return string.Format("{0}x{1}", Coefficient, Index+1);
+        }
     }
 }

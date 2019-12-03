@@ -8,6 +8,7 @@ using static System.Windows.Forms.ListBox;
 
 namespace OptimumPointCalculator
 {
+    
     public static class MyMethods
     {
         public static void EditListIndexes(IList<Variable> list)
@@ -35,21 +36,6 @@ namespace OptimumPointCalculator
                 comboBox.Items.Add(list[i]);
             }
         }
-        public static void UpdateObjectiveFunctionLabel(Label label,Equation objectiveFunction)
-        {
-            foreach(var item in objectiveFunction.Variables)
-            {
-                if (item.Index==0)
-                {
-                    label.Text = item.DisplayMember;
-
-                }
-                else
-                {
-                    label.Text += "+" + item.DisplayMember;
-                }
-            }
-        }
         public static void CopyListToTarget(Equation objectiveFunction,ListBox.ObjectCollection targetList)
         {
             targetList.Clear();
@@ -66,15 +52,21 @@ namespace OptimumPointCalculator
                 targetList.Add(item);
             }
         }
-        public static void CopyListToTarget(Equation objectiveFunction, Equation targetList)
+        public static void CheckTransientEq(Equation transientEquation)
         {
-            targetList.Variables.Clear();
-            for (int i=0;i<objectiveFunction.Variables.Count;i++)
+            foreach(var item in transientEquation.Variables)
             {
-                targetList.Variables.Add(new Variable());
-                targetList.Variables[i].Index = objectiveFunction.Variables[i].Index;
+                if (double.IsPositiveInfinity(item.Coefficient)) { throw new Exception(); }
             }
- 
+        }
+        public static void ClearTransientEq(Equation transientEquation)
+        {
+            transientEquation.RHS = 0;
+            transientEquation.Condition = string.Empty;
+            for (int i = 0; i < transientEquation.Variables.Count; i++)
+            {
+                transientEquation.Variables[i].Coefficient = double.PositiveInfinity;
+            }
         }
 
 

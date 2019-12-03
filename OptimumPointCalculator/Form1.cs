@@ -14,29 +14,50 @@ namespace OptimumPointCalculator
 {
     public partial class Form1 : Form
     {
-        public Optimizations Optimization { get; set; }
+        private Optimizations optimizations = Optimizations.Unspecified;
+        public Optimizations Optimization
+        {
+            get
+            {
+                return optimizations;
+            }
+            set
+            {
+                if (value == Optimizations.Maximization)
+                {
+                    comparisonComboBox.Items.Clear();
+                    comparisonComboBox.Items.AddRange(new string[] { "=","<="});
+                    optimizations = Optimizations.Maximization;
+                }
+                else if(value == Optimizations.Minimization)
+                {
+                    comparisonComboBox.Items.Clear();
+                    comparisonComboBox.Items.AddRange(new string[] { "=", ">=" });
+                    optimizations = Optimizations.Minimization;
+                }
+            }
+        }
+        
+        private Equation ObjectiveFunction;
 
-        Equation ObjectiveFunction;
+        private Equation TransientEquation;
 
-        Equation TransientEquation;
-
-        List<Equation> Constraints;
+        private List<Equation> Constraints;
 
         public Form1()
         {
-            ObjectiveFunction = new Equation(new List<Variable>());
-            TransientEquation = new Equation(new List<Variable>());
-
+            ObjectiveFunction = new Equation();
             Constraints = new List<Equation>();
+
+            this.ObjectiveFunction.EventOfUpdate += ObjectiveFunction_EventOfUpdate;
 
             InitializeComponent();
 
+            this.ObjectiveFunction.ListBoxesToBeUpdate.Add(objectiveFunctionVariablesListBox);
+            this.ObjectiveFunction.LabelsToBeUpdate.Add(objectiveFunction);
+
+            objectiveFunctionVariablesListBox.DisplayMember = "Variable";
             objectiveFunction.Text = string.Empty;
-        }
-
-        private void Form1_Load(object sender, EventArgs e)
-        {
-
         }
 
         // Adding variable for objective function
@@ -44,17 +65,9 @@ namespace OptimumPointCalculator
         {
             if (ValidationMethods.IsThatDouble(objectiveFunctionCoeffTextBox.Text))
             {
-
-                ObjectiveFunction.Variables.Add(new Variable { Coefficient = Convert.ToDouble(objectiveFunctionCoeffTextBox.Text), Index = ObjectiveFunction.Variables.Count });
-
-                MessageBox.Show("Variable added!", "Adding", MessageBoxButtons.OK);
-
-                MyMethods.CopyListToTarget(ObjectiveFunction, objectiveFunctionVariablesListBox.Items);
-                MyMethods.CopyListToTarget(ObjectiveFunction, variableComboBox.Items);
+                ObjectiveFunction.AddElementWithUpdateProcess(new Variable { Coefficient = Convert.ToDouble(objectiveFunctionCoeffTextBox.Text), Index = ObjectiveFunction.Variables.Count });
 
                 objectiveFunctionCoeffTextBox.Text = String.Empty;
-                MyMethods.UpdateObjectiveFunctionLabel(objectiveFunction, this.ObjectiveFunction);
-
             }
             else
             {
@@ -67,51 +80,78 @@ namespace OptimumPointCalculator
         {
             if (objectiveFunctionVariablesListBox.SelectedIndex >= 0)
             {
-                ObjectiveFunction.Variables.RemoveAt(objectiveFunctionVariablesListBox.SelectedIndex);
-                MyMethods.EditListIndexes(ObjectiveFunction.Variables);
-
-                MessageBox.Show("Variable deleted!", "Deletion", MessageBoxButtons.OK);
-
-                MyMethods.EditListControl(objectiveFunctionVariablesListBox, ObjectiveFunction.Variables);
-                MyMethods.EditListControl(variableComboBox, ObjectiveFunction.Variables);
+                ObjectiveFunction.DeleteElementWithUpdateProcess(objectiveFunctionVariablesListBox.SelectedIndex);
 
                 objectiveFunctionCoeffTextBox.Text = String.Empty;
-                MyMethods.UpdateObjectiveFunctionLabel(objectiveFunction, this.ObjectiveFunction);
             }
             else
             {
                 MessageBox.Show("Please select the variable to delete!", "Error", MessageBoxButtons.OK);
             }
 
-
         }
 
-        // Optimization = Minimization 
-        private void minimizationRadioButton_CheckedChanged(object sender, EventArgs e)
+        //Update event
+        private void ObjectiveFunction_EventOfUpdate()
         {
-            var check = sender as RadioButton;
+            // For ListBoxes
+            foreach (var item in this.ObjectiveFunction.ListBoxesToBeUpdate)
+            {
+                item.Items.Clear();
 
-            if (check.Checked)
-                this.Optimization = Optimizations.Minimization;
+                for (int i = 0; i < this.ObjectiveFunction.Variables.Count; i++)
+                {
+                    ObjectiveFunction.Variables[i].Index = i;
+
+                    item.Items.Insert(i, this.ObjectiveFunction.Variables[i]);
+                }
+            }
+
+            // For Labels
+            foreach (var item in this.ObjectiveFunction.Variables)
+            {
+                if (item.Index == 0)
+                {
+                    objectiveFunction.Text = item.ToString();
+                }
+                else
+                {
+                    objectiveFunction.Text += "+" + item.ToString();
+                }
+            }
+
+            // For ComboBoxes
+            variableComboBox.Items.Clear();
+            foreach (var item in this.ObjectiveFunction.Variables)
+            {
+                variableComboBox.Items.Add(item);
+            }
         }
 
-        // Optimization = Maximization 
-        private void maximizationRadioButton_CheckedChanged(object sender, EventArgs e)
+        // Optimization Changed Event
+        private void Optimization_Changed(object sender, EventArgs e)
         {
-            var check = sender as RadioButton;
-
-            if (check.Checked)
+            if (maximizationRadioButton.Checked)
                 this.Optimization = Optimizations.Maximization;
+            else if (minimizationRadioButton.Checked)
+                this.Optimization = Optimizations.Minimization;
         }
 
         // While the objective function changes,TransientEquation changes too.
         private void objectiveFunction_TextChanged(object sender, EventArgs e)
         {
-            MyMethods.CopyListToTarget(ObjectiveFunction, TransientEquation);
         }
-        
-        
 
+        // Assign variables to TransientEquation
+        private void assignCoefficient_Click(object sender, EventArgs e)
+        {
+           
+        }
+
+        private void contraintsAddConstraintButton_Click(object sender, EventArgs e)
+        {
+
+        }
 
     }
 }

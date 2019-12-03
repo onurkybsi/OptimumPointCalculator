@@ -39,10 +39,11 @@
             this.objectiveFunctionCoeffTextBox = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.constraintsFunctionGroupBox = new System.Windows.Forms.GroupBox();
+            this.assignCoefficient = new System.Windows.Forms.Button();
             this.deleteConstraint = new System.Windows.Forms.Button();
             this.constraintsListBox = new System.Windows.Forms.ListBox();
             this.contraintsAddConstraintButton = new System.Windows.Forms.Button();
-            this.d = new System.Windows.Forms.TextBox();
+            this.rhsTextBox = new System.Windows.Forms.TextBox();
             this.label6 = new System.Windows.Forms.Label();
             this.comparisonComboBox = new System.Windows.Forms.ComboBox();
             this.label5 = new System.Windows.Forms.Label();
@@ -51,7 +52,6 @@
             this.contraintsCoeffVariableTextBox = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
             this.calculateOptimumPoint = new System.Windows.Forms.Button();
-            this.assignCoefficient = new System.Windows.Forms.Button();
             this.objectiveFunctionGroupBox.SuspendLayout();
             this.constraintsFunctionGroupBox.SuspendLayout();
             this.SuspendLayout();
@@ -84,7 +84,7 @@
             this.maximizationRadioButton.TabStop = true;
             this.maximizationRadioButton.Text = "Maximization";
             this.maximizationRadioButton.UseVisualStyleBackColor = true;
-            this.maximizationRadioButton.CheckedChanged += new System.EventHandler(this.maximizationRadioButton_CheckedChanged);
+            this.maximizationRadioButton.CheckedChanged += new System.EventHandler(this.Optimization_Changed);
             // 
             // minimizationRadioButton
             // 
@@ -96,7 +96,7 @@
             this.minimizationRadioButton.TabStop = true;
             this.minimizationRadioButton.Text = "Minimization";
             this.minimizationRadioButton.UseVisualStyleBackColor = true;
-            this.minimizationRadioButton.CheckedChanged += new System.EventHandler(this.minimizationRadioButton_CheckedChanged);
+            this.minimizationRadioButton.CheckedChanged += new System.EventHandler(this.Optimization_Changed);
             // 
             // objectiveFunction
             // 
@@ -130,7 +130,6 @@
             // 
             // objectiveFunctionVariablesListBox
             // 
-            this.objectiveFunctionVariablesListBox.DisplayMember = "DisplayMember";
             this.objectiveFunctionVariablesListBox.FormattingEnabled = true;
             this.objectiveFunctionVariablesListBox.ItemHeight = 16;
             this.objectiveFunctionVariablesListBox.Location = new System.Drawing.Point(87, 52);
@@ -170,7 +169,7 @@
             this.constraintsFunctionGroupBox.Controls.Add(this.deleteConstraint);
             this.constraintsFunctionGroupBox.Controls.Add(this.constraintsListBox);
             this.constraintsFunctionGroupBox.Controls.Add(this.contraintsAddConstraintButton);
-            this.constraintsFunctionGroupBox.Controls.Add(this.d);
+            this.constraintsFunctionGroupBox.Controls.Add(this.rhsTextBox);
             this.constraintsFunctionGroupBox.Controls.Add(this.label6);
             this.constraintsFunctionGroupBox.Controls.Add(this.comparisonComboBox);
             this.constraintsFunctionGroupBox.Controls.Add(this.label5);
@@ -185,6 +184,16 @@
             this.constraintsFunctionGroupBox.TabStop = false;
             this.constraintsFunctionGroupBox.Text = "Constraints";
             // 
+            // assignCoefficient
+            // 
+            this.assignCoefficient.Location = new System.Drawing.Point(526, 79);
+            this.assignCoefficient.Name = "assignCoefficient";
+            this.assignCoefficient.Size = new System.Drawing.Size(128, 25);
+            this.assignCoefficient.TabIndex = 19;
+            this.assignCoefficient.Text = "Assign Coefficient";
+            this.assignCoefficient.UseVisualStyleBackColor = true;
+            this.assignCoefficient.Click += new System.EventHandler(this.assignCoefficient_Click);
+            // 
             // deleteConstraint
             // 
             this.deleteConstraint.Location = new System.Drawing.Point(409, 207);
@@ -196,6 +205,7 @@
             // 
             // constraintsListBox
             // 
+            this.constraintsListBox.DisplayMember = "DisplayMemberForConstraintsEqList";
             this.constraintsListBox.FormattingEnabled = true;
             this.constraintsListBox.ItemHeight = 16;
             this.constraintsListBox.Location = new System.Drawing.Point(122, 173);
@@ -211,13 +221,14 @@
             this.contraintsAddConstraintButton.TabIndex = 16;
             this.contraintsAddConstraintButton.Text = "Add Constraint";
             this.contraintsAddConstraintButton.UseVisualStyleBackColor = true;
+            this.contraintsAddConstraintButton.Click += new System.EventHandler(this.contraintsAddConstraintButton_Click);
             // 
-            // d
+            // rhsTextBox
             // 
-            this.d.Location = new System.Drawing.Point(409, 133);
-            this.d.Name = "d";
-            this.d.Size = new System.Drawing.Size(70, 22);
-            this.d.TabIndex = 15;
+            this.rhsTextBox.Location = new System.Drawing.Point(409, 133);
+            this.rhsTextBox.Name = "rhsTextBox";
+            this.rhsTextBox.Size = new System.Drawing.Size(70, 22);
+            this.rhsTextBox.TabIndex = 15;
             // 
             // label6
             // 
@@ -288,15 +299,6 @@
             this.calculateOptimumPoint.Text = "Calculate";
             this.calculateOptimumPoint.UseVisualStyleBackColor = true;
             // 
-            // assignCoefficient
-            // 
-            this.assignCoefficient.Location = new System.Drawing.Point(526, 79);
-            this.assignCoefficient.Name = "assignCoefficient";
-            this.assignCoefficient.Size = new System.Drawing.Size(128, 25);
-            this.assignCoefficient.TabIndex = 19;
-            this.assignCoefficient.Text = "Assign Coefficient";
-            this.assignCoefficient.UseVisualStyleBackColor = true;
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -307,7 +309,6 @@
             this.Controls.Add(this.objectiveFunctionGroupBox);
             this.Name = "Form1";
             this.Text = "Optimum Point Calculator";
-            this.Load += new System.EventHandler(this.Form1_Load);
             this.objectiveFunctionGroupBox.ResumeLayout(false);
             this.objectiveFunctionGroupBox.PerformLayout();
             this.constraintsFunctionGroupBox.ResumeLayout(false);
@@ -332,7 +333,7 @@
         public System.Windows.Forms.Button deleteConstraint;
         public System.Windows.Forms.ListBox constraintsListBox;
         public System.Windows.Forms.Button contraintsAddConstraintButton;
-        public System.Windows.Forms.TextBox d;
+        public System.Windows.Forms.TextBox rhsTextBox;
         private System.Windows.Forms.Label label6;
         public System.Windows.Forms.ComboBox comparisonComboBox;
         private System.Windows.Forms.Label label5;
