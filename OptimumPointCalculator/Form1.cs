@@ -7,6 +7,7 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -14,40 +15,19 @@ namespace OptimumPointCalculator
 {
     public partial class Form1 : Form
     {
-        private Optimizations optimizations = Optimizations.Unspecified;
-        public Optimizations Optimization
-        {
-            get
-            {
-                return optimizations;
-            }
-            set
-            {
-                if (value == Optimizations.Maximization)
-                {
-                    comparisonComboBox.Items.Clear();
-                    comparisonComboBox.Items.AddRange(new string[] { "=","<="});
-                    optimizations = Optimizations.Maximization;
-                }
-                else if(value == Optimizations.Minimization)
-                {
-                    comparisonComboBox.Items.Clear();
-                    comparisonComboBox.Items.AddRange(new string[] { "=", ">=" });
-                    optimizations = Optimizations.Minimization;
-                }
-            }
-        }
-        
-        private Equation ObjectiveFunction;
+        private ObjectiveFunction ObjectiveFunction;
 
-        private Equation TransientEquation;
+        private Optimizations Optimization;
 
-        private List<Equation> Constraints;
+        private Constraint TransientEquation;
+
+        private List<Constraint> Constraints;
 
         public Form1()
         {
-            ObjectiveFunction = new Equation();
-            Constraints = new List<Equation>();
+            ObjectiveFunction = new ObjectiveFunction();
+            TransientEquation = new Constraint();
+            Constraints = new List<Constraint>();
 
             this.ObjectiveFunction.EventOfUpdate += ObjectiveFunction_EventOfUpdate;
 
@@ -94,17 +74,19 @@ namespace OptimumPointCalculator
         //Update event
         private void ObjectiveFunction_EventOfUpdate()
         {
+            int i = 0;
             // For ListBoxes
             foreach (var item in this.ObjectiveFunction.ListBoxesToBeUpdate)
             {
                 item.Items.Clear();
 
-                for (int i = 0; i < this.ObjectiveFunction.Variables.Count; i++)
+                for (i = 0; i < this.ObjectiveFunction.Variables.Count; i++)
                 {
                     ObjectiveFunction.Variables[i].Index = i;
 
                     item.Items.Insert(i, this.ObjectiveFunction.Variables[i]);
                 }
+
             }
 
             // For Labels
@@ -126,32 +108,134 @@ namespace OptimumPointCalculator
             {
                 variableComboBox.Items.Add(item);
             }
+
+            for (i = this.TransientEquation.Variables.Count; i < this.ObjectiveFunction.Variables.Count; i++)
+            {
+                TransientEquation.Variables.Add(new Variable
+                {
+                    Index = this.ObjectiveFunction.Variables[i].Index
+                });
+            }
         }
 
         // Optimization Changed Event
         private void Optimization_Changed(object sender, EventArgs e)
         {
-            if (maximizationRadioButton.Checked)
-                this.Optimization = Optimizations.Maximization;
-            else if (minimizationRadioButton.Checked)
-                this.Optimization = Optimizations.Minimization;
+            if (this.Constraints.Count > 0)
+            {
+                MessageBox.Show("To change the optimization option, you must delete all constraints!", "Error", MessageBoxButtons.OK);
+            }
+            else
+            {
+                if (maximizationRadioButton.Checked)
+                {
+                    comparisonComboBox.Items.Clear();
+                    comparisonComboBox.Items.AddRange(new string[] { "=", "<=" });
+                    this.Optimization = Optimizations.Maximization;
+
+
+                }
+                else if (minimizationRadioButton.Checked)
+                {
+
+                    comparisonComboBox.Items.Clear();
+                    comparisonComboBox.Items.AddRange(new string[] { "=", ">=" });
+                    this.Optimization = Optimizations.Minimization;
+
+                }
+            }
         }
 
-        // While the objective function changes,TransientEquation changes too.
-        private void objectiveFunction_TextChanged(object sender, EventArgs e)
+        // Show assigned coefficient
+        private void variableComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
+            if (variableComboBox.SelectedIndex >= 0)
+            {
+                if (!double.IsPositiveInfinity(TransientEquation.Variables[variableComboBox.SelectedIndex].Coefficient) && variableComboBox.SelectedItem != null)
+                    contraintsCoeffVariableTextBox.Text = TransientEquation.Variables[variableComboBox.SelectedIndex].Coefficient.ToString();
+                else if (variableComboBox.SelectedItem != null)
+                    contraintsCoeffVariableTextBox.Text = "0";
+            }
         }
 
-        // Assign variables to TransientEquation
-        private void assignCoefficient_Click(object sender, EventArgs e)
+        // Assign Coefficient to Transient Eq.
+        private void assignCoefficientButton_Click(object sender, EventArgs e)
         {
-           
+            if (!string.IsNullOrEmpty(contraintsCoeffVariableTextBox.Text) && ValidationMethods.IsThatDouble(contraintsCoeffVariableTextBox.Text) && variableComboBox.SelectedItem != null)
+            {
+                TransientEquation.Variables[variableComboBox.SelectedIndex].Coefficient = Convert.ToDouble(contraintsCoeffVariableTextBox.Text);
+                contraintsCoeffVariableTextBox.Text = string.Empty;
+                variableComboBox.SelectedItem = null;
+            }
+            else
+            {
+                if (!ValidationMethods.IsThatDouble(contraintsCoeffVariableTextBox.Text))
+                    MessageBox.Show("Please enter a number!", "Error", MessageBoxButtons.OK);
+                else
+                    MessageBox.Show("Please enter variable and its coefficient!", "Error", MessageBoxButtons.OK);
+            }
         }
 
+        // Add Constraint
         private void contraintsAddConstraintButton_Click(object sender, EventArgs e)
         {
+            if (TransientEquation.Variables.Count >= 0)
+            {
+                if (comparisonComboBox.SelectedItem != null && !string.IsNullOrEmpty(rhsTextBox.Text))
+                {
+                    TransientEquation.Condition = comparisonComboBox.SelectedItem.ToString();
+                    TransientEquation.RHS = Convert.ToDouble(rhsTextBox.Text);
+                    foreach (var item in TransientEquation.Variables)
+                    {
+                        if (double.IsPositiveInfinity(item.Coefficient))
+                        {
+                            item.Coefficient = 0;
+                        }
+                    }
 
+
+                    // COPY TRANSIENT TO CONSTRAINTS
+                    this.Constraints.Add(MyMethods.CopyTransientToConstraints(TransientEquation));
+
+                    constraintsListBox.Items.Add(TransientEquation.DisplayMemberForConstraintsEqList);
+
+                    comparisonComboBox.SelectedItem = null;
+                    rhsTextBox.Text = string.Empty;
+
+                    foreach (var item in TransientEquation.Variables)
+                    {
+                        item.Coefficient = double.PositiveInfinity;
+                    }
+                    this.TransientEquation.Condition = string.Empty;
+                    this.TransientEquation.RHS = 0;
+                }
+                else
+                {
+                    MessageBox.Show("Please enter comparison and right hand side!", "Error", MessageBoxButtons.OK);
+
+                    comparisonComboBox.SelectedItem = null;
+                    rhsTextBox.Text = string.Empty;
+                }
+
+            }
+            else
+            {
+                MessageBox.Show("Please enter variables!", "Eror", MessageBoxButtons.OK);
+            }
         }
 
+        // Delete Constraint
+        private void deleteConstraintButton_Click(object sender, EventArgs e)
+        {
+            if (constraintsListBox.SelectedItem != null)
+            {
+                this.Constraints.RemoveAt(constraintsListBox.SelectedIndex);
+                constraintsListBox.Items.RemoveAt(constraintsListBox.SelectedIndex);
+            }
+            else
+            {
+                MessageBox.Show("Please select constraint to delete!", "Error", MessageBoxButtons.OK);
+            }
+        }
     }
 }

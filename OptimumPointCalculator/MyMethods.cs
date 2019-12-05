@@ -11,64 +11,30 @@ namespace OptimumPointCalculator
     
     public static class MyMethods
     {
-        public static void EditListIndexes(IList<Variable> list)
+        // Copy Transient Eq. to List of Constraints 
+        public static Constraint CopyTransientToConstraints(Constraint transientEq)
         {
-            for(int i = 0; i < list.Count; i++)
-            {
-                list[i].Index = i;
-            }
-        }
-        public static void EditListControl(ListBox listBox, IList<Variable> list)
-        {
-            listBox.Items.Clear();
+            Constraint constraint = new Constraint();
 
-            for(int i=0;i<list.Count;i++)
+            constraint.Condition = transientEq.Condition;
+            constraint.RHS = transientEq.RHS;
+            
+            foreach(Variable variable in transientEq.Variables)
             {
-                listBox.Items.Add(list[i]);
+                constraint.Variables.Add(new Variable
+                {
+                    Coefficient = variable.Coefficient,
+                    Index = variable.Index
+                });
             }
-        }
-        public static void EditListControl(ComboBox comboBox, IList<Variable> list)
-        {
-            comboBox.Items.Clear();
 
-            for (int i = 0; i < list.Count; i++)
-            {
-                comboBox.Items.Add(list[i]);
-            }
-        }
-        public static void CopyListToTarget(Equation objectiveFunction,ListBox.ObjectCollection targetList)
-        {
-            targetList.Clear();
-            foreach(var item in objectiveFunction.Variables)
-            {
-                targetList.Add(item);
-            }
-        }
-        public static void CopyListToTarget(Equation objectiveFunction,ComboBox.ObjectCollection targetList)
-        {
-            targetList.Clear();
-            foreach(var item in objectiveFunction.Variables)
-            {
-                targetList.Add(item);
-            }
-        }
-        public static void CheckTransientEq(Equation transientEquation)
-        {
-            foreach(var item in transientEquation.Variables)
-            {
-                if (double.IsPositiveInfinity(item.Coefficient)) { throw new Exception(); }
-            }
-        }
-        public static void ClearTransientEq(Equation transientEquation)
-        {
-            transientEquation.RHS = 0;
-            transientEquation.Condition = string.Empty;
-            for (int i = 0; i < transientEquation.Variables.Count; i++)
-            {
-                transientEquation.Variables[i].Coefficient = double.PositiveInfinity;
-            }
+            return constraint;
         }
 
+        // Calculate with simplex method
+        public static void CalculateWithSimplexMethod(ObjectiveFunction objectiveFunction,List<Constraint> constraints,Optimizations optimization)
+        {
 
+        }
     }
 }

@@ -39,8 +39,8 @@
             this.objectiveFunctionCoeffTextBox = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.constraintsFunctionGroupBox = new System.Windows.Forms.GroupBox();
-            this.assignCoefficient = new System.Windows.Forms.Button();
-            this.deleteConstraint = new System.Windows.Forms.Button();
+            this.assignCoefficientButton = new System.Windows.Forms.Button();
+            this.deleteConstraintButton = new System.Windows.Forms.Button();
             this.constraintsListBox = new System.Windows.Forms.ListBox();
             this.contraintsAddConstraintButton = new System.Windows.Forms.Button();
             this.rhsTextBox = new System.Windows.Forms.TextBox();
@@ -107,7 +107,6 @@
             this.objectiveFunction.TabIndex = 6;
             this.objectiveFunction.Text = "z";
             this.objectiveFunction.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.objectiveFunction.TextChanged += new System.EventHandler(this.objectiveFunction_TextChanged);
             // 
             // label2
             // 
@@ -165,8 +164,8 @@
             // 
             // constraintsFunctionGroupBox
             // 
-            this.constraintsFunctionGroupBox.Controls.Add(this.assignCoefficient);
-            this.constraintsFunctionGroupBox.Controls.Add(this.deleteConstraint);
+            this.constraintsFunctionGroupBox.Controls.Add(this.assignCoefficientButton);
+            this.constraintsFunctionGroupBox.Controls.Add(this.deleteConstraintButton);
             this.constraintsFunctionGroupBox.Controls.Add(this.constraintsListBox);
             this.constraintsFunctionGroupBox.Controls.Add(this.contraintsAddConstraintButton);
             this.constraintsFunctionGroupBox.Controls.Add(this.rhsTextBox);
@@ -184,24 +183,25 @@
             this.constraintsFunctionGroupBox.TabStop = false;
             this.constraintsFunctionGroupBox.Text = "Constraints";
             // 
-            // assignCoefficient
+            // assignCoefficientButton
             // 
-            this.assignCoefficient.Location = new System.Drawing.Point(526, 79);
-            this.assignCoefficient.Name = "assignCoefficient";
-            this.assignCoefficient.Size = new System.Drawing.Size(128, 25);
-            this.assignCoefficient.TabIndex = 19;
-            this.assignCoefficient.Text = "Assign Coefficient";
-            this.assignCoefficient.UseVisualStyleBackColor = true;
-            this.assignCoefficient.Click += new System.EventHandler(this.assignCoefficient_Click);
+            this.assignCoefficientButton.Location = new System.Drawing.Point(526, 80);
+            this.assignCoefficientButton.Name = "assignCoefficientButton";
+            this.assignCoefficientButton.Size = new System.Drawing.Size(128, 25);
+            this.assignCoefficientButton.TabIndex = 19;
+            this.assignCoefficientButton.Text = "Assign Coefficient";
+            this.assignCoefficientButton.UseVisualStyleBackColor = true;
+            this.assignCoefficientButton.Click += new System.EventHandler(this.assignCoefficientButton_Click);
             // 
-            // deleteConstraint
+            // deleteConstraintButton
             // 
-            this.deleteConstraint.Location = new System.Drawing.Point(409, 207);
-            this.deleteConstraint.Name = "deleteConstraint";
-            this.deleteConstraint.Size = new System.Drawing.Size(125, 23);
-            this.deleteConstraint.TabIndex = 18;
-            this.deleteConstraint.Text = "Delete Constraint";
-            this.deleteConstraint.UseVisualStyleBackColor = true;
+            this.deleteConstraintButton.Location = new System.Drawing.Point(409, 207);
+            this.deleteConstraintButton.Name = "deleteConstraintButton";
+            this.deleteConstraintButton.Size = new System.Drawing.Size(125, 23);
+            this.deleteConstraintButton.TabIndex = 18;
+            this.deleteConstraintButton.Text = "Delete Constraint";
+            this.deleteConstraintButton.UseVisualStyleBackColor = true;
+            this.deleteConstraintButton.Click += new System.EventHandler(this.deleteConstraintButton_Click);
             // 
             // constraintsListBox
             // 
@@ -264,6 +264,7 @@
             this.variableComboBox.Name = "variableComboBox";
             this.variableComboBox.Size = new System.Drawing.Size(60, 24);
             this.variableComboBox.TabIndex = 11;
+            this.variableComboBox.SelectedIndexChanged += new System.EventHandler(this.variableComboBox_SelectedIndexChanged);
             // 
             // label4
             // 
@@ -330,7 +331,7 @@
         private System.Windows.Forms.Label objectiveFunction;
         private System.Windows.Forms.Label label2;
         public System.Windows.Forms.Button objectiveFunctionDeleteButton;
-        public System.Windows.Forms.Button deleteConstraint;
+        public System.Windows.Forms.Button deleteConstraintButton;
         public System.Windows.Forms.ListBox constraintsListBox;
         public System.Windows.Forms.Button contraintsAddConstraintButton;
         public System.Windows.Forms.TextBox rhsTextBox;
@@ -342,7 +343,8 @@
         public System.Windows.Forms.TextBox contraintsCoeffVariableTextBox;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Button calculateOptimumPoint;
-        public System.Windows.Forms.Button assignCoefficient;
+        private System.Windows.Forms.Label messageOfAssignedLabel;
+        public System.Windows.Forms.Button assignCoefficientButton;
     }
 }
 
