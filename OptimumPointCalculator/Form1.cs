@@ -237,5 +237,10 @@ namespace OptimumPointCalculator
                 MessageBox.Show("Please select constraint to delete!", "Error", MessageBoxButtons.OK);
             }
         }
+
+        private void calculateOptimumPoint_Click(object sender, EventArgs e)
+        {
+            // Calculating method.
+        }
     }
 }

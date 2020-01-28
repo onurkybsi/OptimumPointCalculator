@@ -299,6 +299,7 @@
             this.calculateOptimumPoint.TabIndex = 2;
             this.calculateOptimumPoint.Text = "Calculate";
             this.calculateOptimumPoint.UseVisualStyleBackColor = true;
+            this.calculateOptimumPoint.Click += new System.EventHandler(this.calculateOptimumPoint_Click);
             // 
             // Form1
             // 

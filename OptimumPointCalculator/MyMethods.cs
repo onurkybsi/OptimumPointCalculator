@@ -31,10 +31,10 @@ namespace OptimumPointCalculator
             return constraint;
         }
 
-        // Calculate with simplex method
-        public static void CalculateWithSimplexMethod(ObjectiveFunction objectiveFunction,List<Constraint> constraints,Optimizations optimization)
+        // Calculate with enumerating method
+        public static void Calculate(ObjectiveFunction objectiveFunction,List<Constraint> constraints,Optimizations optimization)
         {
-
+            
         }
     }
 }
